@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Mensagem - Xadrez</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #25D366; color: white; border: none; font-size: 16px; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        button:hover { background-color: #128C7E; }
+        textarea { width: 100%; height: 180px; margin-top: 15px; display: block; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <label for="valorBase">Valor da Aula Avulsa (R$):</label>
+    <input type="number" id="valorBase" value="60" oninput="gerarTexto()">
+
+    <button onclick="copiarTexto()">Copiar para o WhatsApp</button>
+
+    <textarea id="resultado" readonly></textarea>
+
+    <script>
+        function gerarTexto() {
+            // Correção do seletorElemento
+            const v = parseFloat(document.getElementById('valorBase').value) || 0;
+            
+            // Cálculos automáticos
+            const total8 = v * 8;
+            const promo8 = v * 7; // 1 grátis
+            
+            const total12 = v * 12;
+            const promo12 = v * 10; // 2 grátis
+
+            const texto = `Aula 100% online, com duração de 1h30m, apenas R$${v} por pessoa (somente acima de 15 anos de idade).\n\n` +
+                          `Também disponibilizo pacotes promocionais:\n` +
+                          `- 8 aulas (equivalente a 2 por semana), uma sai grátis! De ~R$${total8}~ por R$${promo8}!\n` +
+                          `- 12 aulas (3 por semana), duas saem grátis! De ~R$${total12}~ por R$${promo12}!\n\n` +
+                          `Aceito pagamento por pix ou dinheiro.`;
+
+            document.getElementById('resultado').value = texto;
+        }
+
+        function copiarTexto() {
+            const txt = document.getElementById('resultado');
+            txt.select();
+            txt.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(txt.value);
+            alert('Texto copiado!');
+        }
+
+        // Inicializa o texto na primeira carga
+        window.onload = gerarTexto;
+    </script>
+</body>
+</html>
